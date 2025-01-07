@@ -5,7 +5,7 @@ import { history } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { AvatarDropdown } from './components/RightContent/AvatarDropdown';
 import { requestConfig } from './requestConfig';
-
+import logo from '../public/logo.svg';
 const loginPath = '/user/login';
 
 /**
@@ -42,6 +42,18 @@ export async function getInitialState(): Promise<InitialState> {
 // @ts-ignore
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
+    logo: (
+      <img
+        src={logo}
+        alt="logo"
+        style={{
+          width: 50,
+          height: 50,
+          marginTop: 10,
+          marginLeft: 10,
+        }} // 调整 logo 的大小
+      />
+    ),
     avatarProps: {
       render: () => {
         return <AvatarDropdown />;
