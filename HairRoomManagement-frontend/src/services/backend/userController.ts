@@ -14,6 +14,42 @@ export async function addUserUsingPost(body: API.UserAddRequest, options?: { [ke
   });
 }
 
+/** avatarUpload POST /api/user/avatarUpload */
+export async function avatarUploadUsingPost(
+  body: {},
+  userAvatar?: File,
+  options?: { [key: string]: any },
+) {
+  const formData = new FormData();
+
+  if (userAvatar) {
+    formData.append('userAvatar', userAvatar);
+  }
+
+  Object.keys(body).forEach((ele) => {
+    const item = (body as any)[ele];
+
+    if (item !== undefined && item !== null) {
+      if (typeof item === 'object' && !(item instanceof File)) {
+        if (item instanceof Array) {
+          item.forEach((f) => formData.append(ele, f || ''));
+        } else {
+          formData.append(ele, JSON.stringify(item));
+        }
+      } else {
+        formData.append(ele, item);
+      }
+    }
+  });
+
+  return request<API.BaseResponsestring>('/api/user/avatarUpload', {
+    method: 'POST',
+    data: formData,
+    requestType: 'form',
+    ...(options || {}),
+  });
+}
+
 /** deleteUser POST /api/user/delete */
 export async function deleteUserUsingPost(
   body: API.DeleteRequest,
@@ -36,6 +72,21 @@ export async function getUserByIdUsingGet(
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponseUserVO>('/api/user/get', {
+    method: 'GET',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
+/** getAvatar GET /api/user/get/avatar */
+export async function getAvatarUsingGet(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getAvatarUsingGETParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponsestring>('/api/user/get/avatar', {
     method: 'GET',
     params: {
       ...params,
