@@ -1,7 +1,7 @@
-import {addUserUsingPost, avatarUploadUsingPost} from '@/services/backend/userController';
-import { ProColumns, ProTable } from '@ant-design/pro-components';
+import {addUserUsingPost, avatarUploadUsingPost, getAvatarUsingGet} from '@/services/backend/userController';
+import {ProColumns, ProTable} from '@ant-design/pro-components';
 import '@umijs/max';
-import { message, Modal } from 'antd';
+import {message, Modal} from 'antd';
 import React, {useState} from 'react';
 import {ProFormUploadButton} from "@ant-design/pro-form";
 import {RcFile} from "antd/es/upload";
@@ -49,7 +49,7 @@ const CreateModal: React.FC<Props> = (props) => {
   }
 
   // 自定义上传方法
-  const handleUpload = async (userAvatar: RcFile) => {
+  const handleUpload :(userAvatar: RcFile) => Promise<string> = async (userAvatar: RcFile) => {
     // const formData = new FormData();
     // formData.append('userAvatar', userAvatar);
     const body = {};
@@ -61,8 +61,14 @@ const CreateModal: React.FC<Props> = (props) => {
       if (response && response.data) {
         console.log("上传后，返回值为"+response.data);
         setUserAvatar(response.data);
+        return response;
+        // return response.data; // 返回data，会请求图片，但是云存储不允许post请求图片，导致错误
 
-        return response.data;  // 返回文件 URL
+        // 创建符合API.getAvatarUsingGETParams类型的变量，变量代表的对象包含一个avatarUrl，值是response.data
+        // const avatarGetParams : API.getAvatarUsingGETParams = {avatarUrl : response.data};
+        // const avatarGet = await getAvatarUsingGet(avatarGetParams);
+        // return avatarGet.data || '';  // 返回文件 URL,如果为空，返回空串
+
       }
       throw new Error('上传失败，未收到文件 URL');
     } catch (error) {
@@ -70,6 +76,35 @@ const CreateModal: React.FC<Props> = (props) => {
       throw error;  // 上传失败时抛出错误
     }
   };
+
+  // 处理columns，避免重复的头像字段
+  const updatedColumns = columns.map(col => {
+    if (col.dataIndex === 'userAvatar') {
+      // 如果已经有头像字段，移除或不渲染它
+      return {
+        ...col,
+        renderFormItem: (_, { ...rest }) => {
+          return (
+            <ProFormUploadButton
+              label="点击下方，上传头像"
+              name="userAvatar"
+              action={handleUpload}
+              fieldProps={{
+                listType: 'picture-card',
+                showUploadList: true,
+                accept: '.jpg,.png',
+                fileList,
+                onChange: handleChange,
+              }}
+              extra="支持扩展名：.jpg .png"
+              {...rest}
+            />
+          );
+        }
+      };
+    }
+    return col; // 保持其他columns不变
+  });
 
   return (
     <Modal
@@ -83,32 +118,9 @@ const CreateModal: React.FC<Props> = (props) => {
     >
       <ProTable
         type="form"
-        columns={[
-          ...columns,
-          {
-            title: '头像',
-            dataIndex: 'userAvatar',
-            hideInSearch: true,
-            renderFormItem: (_, {...rest }) => {
-              return (
-                <ProFormUploadButton
-                  label="上传头像"
-                  name="userAvatar"
-                  action={handleUpload}
-                  fieldProps={{
-                    listType: 'picture-card',
-                    showUploadList: true,
-                    accept: '.jpg,.png',
-                    fileList,
-                    onChange: handleChange,
-                  }}
-                  extra="支持扩展名：.jpg .png"
-                  {...rest}
-                />
-              );
-            },
-          },
-        ]}
+        columns={
+          updatedColumns
+        }
         onSubmit={async (values: API.UserAddRequest) => {
 
           if(fileList && fileList.length > 0) {
