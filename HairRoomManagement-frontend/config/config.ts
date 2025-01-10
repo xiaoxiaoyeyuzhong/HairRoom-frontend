@@ -126,7 +126,7 @@ export default defineConfig({
    * @description 基于 openapi 的规范生成serve 和mock，能减少很多样板代码
    * @doc https://pro.ant.design/zh-cn/docs/openapi/
    *
-   * http://localhost:7529/api/doc.html#/home，在项目的该页面查看分组url,api是后端定义的前缀
+   * http://localhost:8080/api/doc.html#/home，在项目的该页面查看分组url,api是后端定义的前缀
    */
   openAPI: [
     {

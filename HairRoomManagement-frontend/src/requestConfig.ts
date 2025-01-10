@@ -25,6 +25,11 @@ export const requestConfig: RequestConfig = {
   requestInterceptors: [
     (config: RequestOptions) => {
       // 拦截请求配置，进行个性化处理。
+      // if(!config.headers){
+      //   config.headers = new Headers();
+      // }
+      // config.headers.set('Accept', 'application/json');
+
       return config;
     },
   ],

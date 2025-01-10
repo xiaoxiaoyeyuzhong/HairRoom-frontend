@@ -1,4 +1,4 @@
-import {addUserUsingPost, avatarUploadUsingPost, getAvatarUsingGet} from '@/services/backend/userController';
+import {addUserUsingPost, avatarUploadUsingPost} from '@/services/backend/userController';
 import {ProColumns, ProTable} from '@ant-design/pro-components';
 import '@umijs/max';
 import {message, Modal} from 'antd';
@@ -94,6 +94,7 @@ const CreateModal: React.FC<Props> = (props) => {
                 showUploadList: true,
                 accept: '.jpg,.png',
                 fileList,
+                maxCount: 1,// 限制上传的文件只有一个
                 onChange: handleChange,
               }}
               extra="支持扩展名：.jpg .png"
