@@ -60,6 +60,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
       },
     },
     waterMarkProps: {
+      // 背景水印
       content: initialState?.currentUser?.userName,
     },
     footerRender: () => <Footer />,

@@ -1,4 +1,10 @@
 declare namespace API {
+  type BaseResponseBill = {
+    code?: number;
+    data?: Bill;
+    message?: string;
+  };
+
   type BaseResponseboolean = {
     code?: number;
     data?: boolean;
@@ -23,9 +29,21 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponsePageBillVO = {
+    code?: number;
+    data?: PageBillVO;
+    message?: string;
+  };
+
   type BaseResponsePagePost = {
     code?: number;
     data?: PagePost;
+    message?: string;
+  };
+
+  type BaseResponsePageStaffVO = {
+    code?: number;
+    data?: PageStaffVO;
     message?: string;
   };
 
@@ -41,6 +59,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseStaff = {
+    code?: number;
+    data?: Staff;
+    message?: string;
+  };
+
   type BaseResponsestring = {
     code?: number;
     data?: string;
@@ -53,6 +77,64 @@ declare namespace API {
     message?: string;
   };
 
+  type Bill = {
+    billAmount?: number;
+    billDesc?: string;
+    billName?: string;
+    billType?: string;
+    createTime?: string;
+    customerId?: number;
+    id?: number;
+    isDelete?: number;
+    staffId?: number;
+    updateTime?: string;
+  };
+
+  type BillAddRequest = {
+    billAmount?: number;
+    billDesc?: string;
+    billName?: string;
+    billType?: string;
+    customerId?: number;
+    staffId?: number;
+  };
+
+  type BillQueryRequest = {
+    billAmount?: number;
+    billDesc?: string;
+    billName?: string;
+    billType?: string;
+    current?: number;
+    customerId?: number;
+    id?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    staffId?: number;
+  };
+
+  type BillUpdateRequest = {
+    billAmount?: number;
+    billDesc?: string;
+    billName?: string;
+    billType?: string;
+    customerId?: number;
+    id?: number;
+    staffId?: number;
+  };
+
+  type BillVO = {
+    billAmount?: number;
+    billDesc?: string;
+    billName?: string;
+    billType?: string;
+    createTime?: string;
+    customerId?: number;
+    id?: number;
+    staffId?: number;
+    updateTime?: string;
+  };
+
   type DeleteRequest = {
     id?: number;
   };
@@ -62,7 +144,17 @@ declare namespace API {
     avatarUrl?: string;
   };
 
+  type getBillByIdUsingPOSTParams = {
+    /** id */
+    id?: number;
+  };
+
   type getPostByIdUsingGETParams = {
+    /** id */
+    id?: number;
+  };
+
+  type getStaffByIdUsingPOSTParams = {
     /** id */
     id?: number;
   };
@@ -189,6 +281,19 @@ declare namespace API {
     column?: string;
   };
 
+  type PageBillVO = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: BillVO[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
   type PagePost = {
     countId?: string;
     current?: number;
@@ -197,6 +302,19 @@ declare namespace API {
     orders?: OrderItem[];
     pages?: number;
     records?: Post[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
+  type PageStaffVO = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: StaffVO[];
     searchCount?: boolean;
     size?: number;
     total?: number;
@@ -263,6 +381,61 @@ declare namespace API {
     reviewStatus?: number;
   };
 
+  type Staff = {
+    createTime?: string;
+    id?: number;
+    isDelete?: number;
+    isStoreManager?: number;
+    staffAge?: number;
+    staffEmail?: string;
+    staffName?: string;
+    staffPhone?: string;
+    staffSex?: string;
+    storeId?: number;
+    updateTime?: string;
+    userId?: number;
+  };
+
+  type StaffAddRequest = {
+    id?: number;
+    isStoreManager?: number;
+    staffAge?: number;
+    staffEmail?: string;
+    staffName?: string;
+    staffPhone?: string;
+    staffSex?: string;
+    storeId?: number;
+  };
+
+  type StaffQueryRequest = {
+    current?: number;
+    id?: number;
+    isStoreManager?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    staffAge?: number;
+    staffEmail?: string;
+    staffName?: string;
+    staffPhone?: string;
+    staffSex?: string;
+    storeId?: number;
+    userId?: number;
+  };
+
+  type StaffUpdateRequest = {
+    id?: number;
+    isStoreManager?: number;
+    staffAge?: number;
+    staffEmail?: string;
+    staffName?: string;
+    staffPhone?: string;
+    staffSex?: string;
+    storeId?: number;
+  };
+
+  type StaffVO = true;
+
   type UserAddRequest = {
     userAccount?: string;
     userAvatar?: string;
@@ -279,7 +452,6 @@ declare namespace API {
   type UserQueryRequest = {
     createTime?: string;
     current?: number;
-    gender?: number;
     id?: number;
     pageSize?: number;
     sortField?: string;
@@ -298,7 +470,6 @@ declare namespace API {
   };
 
   type UserUpdateRequest = {
-    gender?: number;
     id?: number;
     userAccount?: string;
     userAvatar?: string;

@@ -151,6 +151,7 @@ const UserAdminPage: React.FC = () => {
             <PlusOutlined /> 新建
           </Button>,
         ]}
+        // 表格需要重新加载（首次渲染、分页、查找、筛选）时执行，请求数据
         request={async (params, sort, filter) => {
           const sortField = Object.keys(sort)?.[0];
           const sortOrder = sort?.[sortField] ?? undefined;
