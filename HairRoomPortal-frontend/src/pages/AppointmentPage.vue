@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import TeamCardList from "../components/teamCardList.vue";
+import TeamCardList from "../components/ScheduleCardList.vue";
 import { onMounted, ref } from "vue";
 import myAxios from "../plugins/myAxios.ts";
 import { showFailToast } from "vant";
@@ -43,13 +43,17 @@ const onSearch = (val) => {
   listTeam(val);
 };
 
-// 可预约的日期
-const appointmentDays = ref([]);
+// 可预约的日期，记得要初始化，加入"1.1"等假数据，否则页面初始化的时候不会默认选中第一项
+const appointmentDays = ref([
+  "1.1",
+  "1.2",
+  "1.3"
+]);
 // 今天的日期
 const today = new Date();
 // 选择日期,初始化时也要记得得到的月份从0开始，要+1
 const selectedDay = ref();
-console.log(selectedDay.value);
+console.log("初始化"+selectedDay.value);
 // 根据当前日期生成接下来七天的日期
 const generateNextSevenDays = () => {
 
@@ -62,11 +66,13 @@ const generateNextSevenDays = () => {
     const day = nextDay.getDate();
     days.push(`${month}.${day}`);
   }
+  // appointmentDays.value = days;
   appointmentDays.value = days;
   // 设置默认选中今天
-  selectedDay.value = appointmentDays.value[0];
+  // 确保selectedDay也同步更新
+  // selectedDay.value = appointmentDays.value[0];// 设置为第一个日期
   console.log("generateNextSevenDays后，selectedDay=" + selectedDay.value);
-  console.log(appointmentDays.value);
+  console.log(appointmentDays);
 };
 
 // 根据选择的日期来切换队伍列表

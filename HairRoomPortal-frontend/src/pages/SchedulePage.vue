@@ -1,44 +1,41 @@
-<script setup>
+<script setup lang="ts">
 import {useRouter} from "vue-router";
-import TeamCardList from "../components/teamCardList.vue"
+import ScheduleCardList from "../components/ScheduleCardList.vue"
 import {onMounted, ref} from "vue";
 import myAxios from "../plugins/myAxios.ts";
 import {showFailToast} from "vant";
 const router = useRouter();
 const searchText = ref([]);
 //跳转到加入队伍页面
-const doAddTeam = () => {
+const doAddSchedule = () => {
   router.push({
     path: '/TeamPage/TeamAddPage',
   })
 }
-const teamList = ref([]);
+const scheduleList = ref([]);
 /**
  * 搜索队伍
- * @param val
- * @param status
- * @returns {Promise<void>}
+
  */
-const listTeam = async (val = ' ',status = 0) => {
-  const res = await myAxios.get("/team/list", {
-    params: {
-      searchText: val,
-      pageNum: 1,
-      status
-    }
-  });
+const ScheduleQueryRequest = ref({
+  "staffId": 1,
+  "weekDay": 2,
+});
+
+const listSchedule = async () => {
+  const res = await myAxios.post("/schedule/get/day",ScheduleQueryRequest.value);
   if (res.code === 0) {
-    teamList.value = res.data;
+    scheduleList.value = res.data;
   } else {
     showFailToast("获取队伍列表失败，请刷新重试");
   }
 }
 //只会在页面加载时触发一次
 onMounted(() => {
-  listTeam();
+  listSchedule();
 })
 const onSearch = (val) => {
-  listTeam(val);
+  listSchedule(val);
 }
 
 /**
@@ -57,25 +54,25 @@ const daysOfWeek = [
 ];
 // 选择的星期几
 const selectedDay = ref("周一");
-const onTableChange = (name) =>{
-  //查询公开队伍
-  if(name === 'public'){
-    listTeam(searchText.value,0);
-  }else{//查加密队伍
-    listTeam(searchText.value,2);
-  }
+const onTableChange = (name : string) =>{
+  // 获取选择的星期几的下标，要记住获取的下标是从零开始的
+  const index = daysOfWeek.indexOf(name);
+  console.log("选中的星期几下标是", index);
+  ScheduleQueryRequest.value.weekDay = index;
+  listSchedule();
 }
+
 </script>
 
 <template>
   <div id="SchedulePage">
     <van-search v-model="searchText" placeholder="搜索队伍" @search="onSearch"/>
     <van-tabs v-model:active="selectedDay" @change="onTableChange">
-      <van-tab v-for="(day, index) in daysOfWeek" :key="index" :title="day" :name="index" />
+      <van-tab v-for="(day, index) in daysOfWeek" :key="index" :title="day" :name="day" />
     </van-tabs>
-    <van-button class="add-button" type="primary" icon="plus" @click="doAddTeam()" />
-    <team-card-list class="card-component" :team-list="teamList" />
-    <van-empty v-if="teamList?.length < 1" description="数据为空"/>
+    <van-button class="add-button" type="primary" icon="plus" @click="doAddSchedule()" />
+    <schedule-card-list class="card-component" :schedule-list="scheduleList" />
+    <van-empty v-if="scheduleList?.length < 1" description="今天排班为空"/>
   </div>
 </template>
 

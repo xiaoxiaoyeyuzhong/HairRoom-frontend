@@ -2,29 +2,16 @@ declare namespace API{
      type CurrentUser = {
         id: number;
 
-        username: string;
+        username?: string;
 
         userAccount: string;
 
-        avatarUrl?: string;
+        userAvatar?: string;
 
-        gender: number;
-
-        phone: string;
-
-        email: string;
-
-        userStatus: number;
-
-        createTime: Date;
+        userPassword: string;
 
         userRole: number;
 
-        tags: string;
-
-        profile: string;
-
-        planetCode: string;
     };
 
    type Team = {
@@ -42,5 +29,43 @@ declare namespace API{
       createUser?: CurrentUser;
       hasJoin: boolean;
       hasJoinNum?: number;
+   }
+
+   type Schedule = {
+       id: number;
+      /**
+       * 员工id
+       */
+      staffId: number;
+
+      /**
+       * 门店id
+       */
+      storeId: number;
+
+      /**
+       * 星期几
+       */
+      weekDay: number;
+
+      /**
+       * 时间段
+       */
+      timeSlot: number;
+
+      /**
+       * 已预约数
+       */
+      haveAppointedSlots: number;
+
+      /**
+       * 可预约数
+       */
+      appointSlots: number;
+   }
+
+   type ScheduleQueryRequest = {
+      staffId: number;
+      weekDay: number;
    }
 }

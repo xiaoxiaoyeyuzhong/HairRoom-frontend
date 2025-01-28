@@ -58,7 +58,7 @@ router.beforeEach((to,from)=>{
     <!--路由的to要加上/-->
     <van-tabbar-item replace to="/" icon="home-o" name="index">主页</van-tabbar-item>
     <van-tabbar-item replace to="/AppointmentPage" icon="search" name="appointment">预约</van-tabbar-item>
-    <van-tabbar-item replace to="/SchedulePage" icon="search" name="schedule">队伍</van-tabbar-item>
+    <van-tabbar-item replace to="/SchedulePage" icon="search" name="schedule">排班</van-tabbar-item>
     <van-tabbar-item replace to="/UserPage" icon="friends-o" name="user">个人</van-tabbar-item>
   </van-tabbar>
 
