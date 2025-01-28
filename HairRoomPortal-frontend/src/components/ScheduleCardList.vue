@@ -1,6 +1,5 @@
 <script setup lang="ts">
 
-import {teamStatusEnum} from "../constants/schedule/teamStatusEnum.ts";
 import picture from "../assets/picture.png";
 import myAxios from "../plugins/myAxios";
 import {showFailToast, showSuccessToast} from "vant";
