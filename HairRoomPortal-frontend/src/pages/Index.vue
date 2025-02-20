@@ -64,6 +64,12 @@ watchEffect(() => {
   loadData();
 })
 
+const doPay = () =>{
+  // axios配置了api前缀，但是这里没用到，需要注意加上api前缀
+  window.open("http://127.0.0.1:8081/api/alipay/pay?billName="+"德田发型屋，"
+      + "洗剪吹" +"&billId="+Math.floor(Math.random() * 900000) + 100000+"&billAmount="
+      + "20" ,'_self')
+}
 
 </script>
 
@@ -72,6 +78,7 @@ watchEffect(() => {
     <van-switch v-model="isMatchMode" />
   </van-cell>
   <user-card-list class="card-component" :user-list="userList" :loading="loading"/>
+  <van-button type="primary" @click="doPay()">主要按钮</van-button>
 
   <van-empty v-if="!userList || userList.length<1" description="数据为空" />
 </template>

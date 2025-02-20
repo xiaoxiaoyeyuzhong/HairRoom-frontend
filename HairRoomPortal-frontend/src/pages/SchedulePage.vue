@@ -19,7 +19,7 @@ const scheduleList = ref([]);
  */
 const ScheduleQueryRequest = ref({
   "staffId": 1,
-  "weekDay": 2,
+  "weekDay": 1,
 });
 
 const listSchedule = async () => {
@@ -58,7 +58,7 @@ const onTableChange = (name : string) =>{
   // 获取选择的星期几的下标，要记住获取的下标是从零开始的
   const index = daysOfWeek.indexOf(name);
   console.log("选中的星期几下标是", index);
-  ScheduleQueryRequest.value.weekDay = index;
+  ScheduleQueryRequest.value.weekDay = index + 1;
   listSchedule();
 }
 
