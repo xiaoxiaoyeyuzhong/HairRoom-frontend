@@ -126,6 +126,9 @@ const doDeleteTeam = async (id: number) => {
 
       <template #bottom>
         <div>
+          {{ `时间段: ${schedule.timeSlot}` }}
+        </div>
+        <div>
           {{ `已预约人数: ${schedule.haveAppointedSlots}` }}
         </div>
 <!--        <div v-if="schedule.expireTime">-->

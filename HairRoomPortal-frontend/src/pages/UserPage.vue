@@ -33,7 +33,7 @@ import {getCurrentUser} from "../services/user.ts";
 // const formattedCreateTime = user.createTime.toLocaleDateString();
 // 格式化标签
 // const formattedTags = user.tags.join(',');
-const user=ref();
+const user : API.CurrentUser =ref();
 onMounted(async ()=>{
   const res = await getCurrentUser();
   console.log(res);
@@ -61,10 +61,11 @@ const doEdit = (editKey: string,editName: string|number,currentValue: string|und
 
 <template>
   <template v-if="user">
-    <van-cell title="当前用户" :value="user?.username" />
+    <van-cell title="当前用户" :value="user?.userName" />
     <van-cell title="修改信息" is-link to="/UserPage/UserUpdatePage" />
     <van-cell title="我创建的队伍" is-link to="/UserPage/TeamPage/UserTeamCreatePage" />
     <van-cell title="我加入的队伍" is-link to="/UserPage/TeamPage/UserTeamJoinPage" />
+    <van-cell title="我预约的理发师" is-link to="/UserPage/TeamPage/UserTeamJoinPage" />
   </template>
 </template>
 

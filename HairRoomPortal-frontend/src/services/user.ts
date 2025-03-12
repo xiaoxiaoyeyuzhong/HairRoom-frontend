@@ -7,7 +7,7 @@ export const getCurrentUser = async ()=>{
     //     return currentUser;
     // }
     // 用户登录状态不存在，从远程获取
-    const res =await myAxios.get('/user/current');
+    const res =await myAxios.get('/user/get/login');
     if (res.code === 0){
         // setCurrentUserState(res.data);
     }
