@@ -53,7 +53,7 @@ const onSearch = (val) => {
 };
 
 // 可预约的日期，记得要初始化，加入"1.1"等假数据，否则页面初始化的时候不会默认选中第一项
-// todo 不要用假数据，初始化都用当前时间，防止onChange组件多次请求覆盖正确值
+
 const appointmentDays = ref([
   getToday(),
 ]);
