@@ -66,9 +66,11 @@ watchEffect(() => {
 
 const doPay = () =>{
   // axios配置了api前缀，但是这里没用到，需要注意加上api前缀
+  // 支付宝沙箱不太稳定，可能出现请求三次才成功的情况，不是代码的问题
+  // 关于window.open的第二个参数，_self代表直接在本窗口跳转到支付宝支付窗口，而_blank代表使用新窗口打开
   window.open("http://127.0.0.1:8081/api/alipay/pay?billName="+"德田发型屋，"
-      + "洗剪吹" +"&billId="+Math.floor(Math.random() * 900000) + 100000+"&billAmount="
-      + "20" ,'_self')
+      + "洗剪吹" +"&billOutId="+Date.now()+"&billAmount="
+      + "20" ,'_blank')
 }
 
 </script>

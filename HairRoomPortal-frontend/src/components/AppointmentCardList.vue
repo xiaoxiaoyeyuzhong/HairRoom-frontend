@@ -16,9 +16,8 @@ interface ScheduleCardListProps{
 const router = useRouter();
 const currentUser : API.CurrentUser= ref();
 
-onMounted(async()=>{
-  currentUser.value=await getCurrentUser();
-})
+
+
 
 const props= withDefaults(defineProps<ScheduleCardListProps>(),{
   //@ts-ignore
@@ -27,17 +26,19 @@ const props= withDefaults(defineProps<ScheduleCardListProps>(),{
 });
 
 const AppointmentAddRequest = ref({
-  customerId: 0, // 不能在还未像后端请求currentUser的时候就初始化，会报空指针
+  customerUserId: 0, // 不能在还未像后端请求currentUser的时候就初始化，会报空指针
   staffId: 0,
   appointmentTime: props.appointmentTime,
-
+  timeSlot: 0,
     }
 );
 // 预约理发师
-const doAddAppointment = async (staffId: number) =>{
+const doAddAppointment = async (staffId: number,timeSlot: number) =>{
 
+  console.log("AppointCard value?  currentUser.value.id=" + currentUser.value.id)
   AppointmentAddRequest.value.staffId=staffId;
-  AppointmentAddRequest.value.customerId=currentUser.value.id;
+  AppointmentAddRequest.value.timeSlot=timeSlot;
+  AppointmentAddRequest.value.customerUserId=currentUser.value.id;
   // 传参数的时候记得，ref（响应式变量）需要取value
   const res = await myAxios.post('/appointment/add',AppointmentAddRequest.value);
   if(res.code === 0){
@@ -49,6 +50,18 @@ const doAddAppointment = async (staffId: number) =>{
 
 }
 
+// 订单支付
+const doPay = async (staffId : number) =>{
+
+  const billOutId = + currentUser.value.id + "_" + staffId + "_" + Date.now()
+
+  // axios配置了api前缀，但是这里没用到，需要注意加上api前缀
+  // 支付宝沙箱不太稳定，可能出现请求三次才成功的情况，不是代码的问题
+  // 关于window.open的第二个参数，_self代表直接在本窗口跳转到支付宝支付窗口，而_blank代表使用新窗口打开
+  window.open("http://127.0.0.1:8081/api/alipay/pay?billName="+"德田发型屋，"
+      + "洗剪吹" + "&billOutId="+ billOutId  +"&billAmount="
+      + "20" ,'_blank')
+}
 
 //加入队伍
 const joinTeamId = ref(0);
@@ -132,6 +145,13 @@ const doDeleteTeam = async (id: number) => {
     showFailToast('操作失败' + (res.description ? `，${res.description}` : ''));
   }
 }
+
+onMounted(async()=>{
+  const res =await getCurrentUser();
+  // 将响应式变量的value指向我们封装的data
+  currentUser.value = res.data;
+})
+
 </script>
 
 <template>
@@ -152,6 +172,9 @@ const doDeleteTeam = async (id: number) => {
 
       <template #bottom>
         <div>
+          {{ `时间段: ${schedule.timeSlot}` }}
+        </div>
+        <div>
           {{ `已预约人数: ${schedule.haveAppointedSlots}` }}
         </div>
         <!--        <div v-if="schedule.expireTime">-->
@@ -163,11 +186,20 @@ const doDeleteTeam = async (id: number) => {
       </template>
       <template #footer>
 
+        <!-- plain为朴素样式 -->
         <!-- 预约理发师 todo 跳转到选择时间段和号码的页面，点击确定后添加预约，如果要现在支付，再跳转到支付页面 -->
-        <van-button  size="small"  plain
-                     @click="doAddAppointment(schedule.staffId)"
+        <van-button  size="small"
+                     plain
+                     @click="doAddAppointment(schedule.staffId,schedule.timeSlot)"
                      type="primary"
         >预约理发师</van-button>
+
+        <van-button  size="small"
+                     plain
+                     @click="doPay(schedule.staffId)"
+                     type="success"
+        >去支付</van-button>
+
         <!-- 取消预约 -->
         <van-button  size="small"
                      plain

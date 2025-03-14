@@ -12,6 +12,7 @@ import UserTeamJoinPage from "../pages/UserTeamJoinPage.vue";
 import UserTeamCreatePage from "../pages/UserTeamCreatePage.vue";
 import SchedulePage from "../pages/SchedulePage.vue";
 import AppointmentPage from "../pages/AppointmentPage.vue";
+import UserAppointmentPage from "../pages/UserAppointmentPage.vue";
 
 
 const routes = [
@@ -28,6 +29,7 @@ const routes = [
     {path: '/UserPage/UserUpdatePage',title:'更新个人信息',component: UserUpdatePage},
     {path: '/UserPage/TeamPage/UserTeamJoinPage',title:'我加入的队伍',component: UserTeamJoinPage},
     {path: '/UserPage/TeamPage/UserTeamCreatePage',title:'我创建的队伍',component: UserTeamCreatePage},
+    { path: '/UserPage/UserAppointmentPage',title:'已预约列表', component: UserAppointmentPage },
 
 
 ]
