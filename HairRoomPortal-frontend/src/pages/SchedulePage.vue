@@ -66,7 +66,7 @@ const onTableChange = (name : string) =>{
 
 <template>
   <div id="SchedulePage">
-    <van-search v-model="searchText" placeholder="搜索排班" @search="onSearch"/>
+    <van-search v-model="searchText" placeholder="搜索队伍" @search="onSearch"/>
     <van-tabs v-model:active="selectedDay" @change="onTableChange">
       <van-tab v-for="(day, index) in daysOfWeek" :key="index" :title="day" :name="day" />
     </van-tabs>
