@@ -99,7 +99,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="AppointmentPage">
+  <div id="SchedulePage">
     <van-search v-model="searchText" placeholder="搜索理发师" @search="onSearch" />
     <van-tabs v-model:active="selectedDay" @change="onTableChange">
       <van-tab
@@ -116,6 +116,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-#AppointmentPage {
+#SchedulePage {
 }
 </style>
