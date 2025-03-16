@@ -13,12 +13,14 @@ import UserTeamCreatePage from "../pages/UserTeamCreatePage.vue";
 import SchedulePage from "../pages/SchedulePage.vue";
 import AppointmentPage from "../pages/AppointmentPage.vue";
 import UserAppointmentPage from "../pages/UserAppointmentPage.vue";
+import ScheduleUpdatePage from "../pages/ScheduleUpdatePage.vue";
 
 
 const routes = [
     { path: '/', component: Index },
     { path: '/AppointmentPage',title:'预约', component: AppointmentPage },
     { path: '/SchedulePage',title:'排班', component: SchedulePage },
+    { path: '/SchedulePage/ScheduleUpdatePage',title:'更新排班', component: ScheduleUpdatePage },
     {path: '/TeamPage/TeamAddPage',title:'创建队伍',component: TeamAddPage},
     {path: '/TeamPage/TeamUpdatePage',title:'更新队伍',component: TeamUpdatePage},
     {path:'/SearchPage',title:'找伙伴',component: SearchPage},

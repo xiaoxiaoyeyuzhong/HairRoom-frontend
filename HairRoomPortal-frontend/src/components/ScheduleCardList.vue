@@ -15,9 +15,7 @@ interface ScheduleCardListProps{
 const router = useRouter();
 const currentUser = ref();
 
-onMounted(async()=>{
-  currentUser.value=await getCurrentUser();
-})
+
 
 const props= withDefaults(defineProps<ScheduleCardListProps>(),{
   //@ts-ignore
@@ -63,19 +61,40 @@ const doJoinCancel =()=>{
   password.value = '';
 }
 
+//  在跳转到更新排班页面的时候传递已经存在的排班时间段
+// 不用ref，router传递数据的时候会爆红，而且不能用const，因为不能改
+let timeSlots : number[]= [
+];
+
+const pushTimeSlots = () =>{
+  // 处理排班数组中的每一项，将其中的排班时间段组成一个新数组返回
+  timeSlots =props.scheduleList.map(schedule => schedule.timeSlot);
+  console.log("appointmentPage_处理排班时间段" + timeSlots[0]);
+}
 
 /**
- * 跳转至更新队伍页面
+ * 跳转至更新排班页面
  * @param id
+ * @param nowTimeSlot
  */
-const doUpdateTeam=(id: number)=>{
+const doUpdateSchedule=(id: number,nowTimeSlot: number)=>{
+  pushTimeSlots();
   router.push({
-    path: '/TeamPage/TeamUpdatePage',
+    path: '/SchedulePage/ScheduleUpdatePage',
     query:{
       id,
+      nowTimeSlot,
+      timeSlots,
     }
   })
 }
+
+// 展示时间段需要的时间段映射
+const timeSlotsMap = [
+  { value: 1, label: '上午' },
+  { value: 2, label: '下午' },
+  { value: 3, label: '晚上' },
+];
 
 /**
  * 退出队伍
@@ -106,6 +125,12 @@ const doDeleteTeam = async (id: number) => {
     showFailToast('操作失败' + (res.description ? `，${res.description}` : ''));
   }
 }
+
+onMounted(async()=>{
+  currentUser.value=await getCurrentUser();
+
+})
+
 </script>
 
 <template>
@@ -126,7 +151,23 @@ const doDeleteTeam = async (id: number) => {
 
       <template #bottom>
         <div>
-          {{ `时间段: ${schedule.timeSlot}` }}
+          <div
+              v-for="(timeSlot, index) in timeSlotsMap"
+              :key="timeSlot.value"
+              :name="timeSlot.value"
+              v-show="Number(`${schedule.timeSlot}`) === timeSlot.value"
+          >
+            {{ timeSlot.label }}
+          </div>
+<!--          <div v-if="Number(`${schedule.timeSlot}`)===1" >-->
+<!--            上午-->
+<!--          </div>-->
+<!--          <div v-if="Number(`${schedule.timeSlot}`)===2" >-->
+<!--            下午-->
+<!--          </div>-->
+<!--          <div v-if="Number(`${schedule.timeSlot}`)===3" >-->
+<!--            晚上-->
+<!--          </div>-->
         </div>
         <div>
           {{ `已预约人数: ${schedule.haveAppointedSlots}` }}
@@ -143,9 +184,10 @@ const doDeleteTeam = async (id: number) => {
 <!--        <van-button size="small" type="primary" plain-->
 <!--                    @click="doAddSchedule(schedule.id)">加入排班</van-button>-->
         <!-- 更新排班 -->
-        <van-button  size="small"  plain
-                    @click="doUpdateTeam(schedule.id)"
-                    type="warning"
+        <van-button  size="small"
+                     plain
+                     @click="doUpdateSchedule(schedule.id,schedule.timeSlot)"
+                     type="warning"
         >更新排班</van-button>
         <!-- 删除排班 -->
         <van-button  size="small"
