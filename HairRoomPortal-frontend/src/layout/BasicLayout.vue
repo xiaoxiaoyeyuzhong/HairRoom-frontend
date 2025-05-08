@@ -1,8 +1,13 @@
-<script setup>
-import {ref} from "vue";
+<script setup lang="ts">
+import {onMounted, ref} from "vue";
 import { showToast } from 'vant';
 import {useRouter} from "vue-router";
+import {getCurrentUser} from "../services/user.ts";
+import {userRoleEnum} from "../constants/user/userRoleEnum.ts";
 import routes from "../config/routes.ts";
+import {useUserStore} from "../stores/user.ts";
+import {storeToRefs} from "pinia";
+
 const router=useRouter();
 const onClickLeft = () => {
   // 点击箭头返回时，跳转到上一个页面，因为有多级页面
@@ -25,6 +30,17 @@ router.beforeEach((to,from)=>{
   })
   title.value = route.title ?? DEFAULT_TITLE;
 })
+
+// 声明用户登录状态
+const userStore = useUserStore();
+const { currentUser } = storeToRefs(userStore); // 使用 storeToRefs 保持响应式
+
+onMounted(async()=>{
+  //获取用户信息
+  await userStore.fetchCurrentUser(); // 获取用户信息
+  console.log("BasicLayout.vue:" + currentUser.value);
+})
+
 </script>
 
 <template>
@@ -56,9 +72,12 @@ router.beforeEach((to,from)=>{
   <!--点击底部标签栏进行页面切换-->
   <van-tabbar route @change="onChange">
     <!--路由的to要加上/-->
+    <!-- 当用户的角色为客户时，显示预约而不显示排班；当用户角色为员工时，显示排班而不显示预约；-->
     <van-tabbar-item replace to="/" icon="home-o" name="index">主页</van-tabbar-item>
-    <van-tabbar-item replace to="/AppointmentPage" icon="search" name="appointment">预约</van-tabbar-item>
-    <van-tabbar-item replace to="/SchedulePage" icon="search" name="schedule">排班</van-tabbar-item>
+    <van-tabbar-item replace to="/AppointmentPage" icon="search" name="appointment"
+                     v-if="currentUser?.data.userRole===userRoleEnum.C">预约</van-tabbar-item>
+    <van-tabbar-item replace to="/SchedulePage" icon="search" name="schedule"
+                     v-if="currentUser?.data.userRole===userRoleEnum.S">排班</van-tabbar-item>
     <van-tabbar-item replace to="/UserPage" icon="friends-o" name="user">个人</van-tabbar-item>
   </van-tabbar>
 

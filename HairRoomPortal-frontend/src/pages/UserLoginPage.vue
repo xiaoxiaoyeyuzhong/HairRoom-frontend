@@ -3,19 +3,23 @@ import {ref} from "vue";
 import myAxios from "../plugins/myAxios.ts"
 import {showFailToast, showSuccessToast} from "vant";
 import {useRoute, useRouter} from "vue-router";
+import {useUserStore} from "../stores/user.ts";
 
 const userAccount = ref('');
 const userPassword = ref('');
 const router=useRouter();
 const route =useRoute();
+const userStore = useUserStore();
 const onSubmit = async () => {
   const res=await myAxios.post('/user/login',{
     userAccount: userAccount.value,
     userPassword: userPassword.value,
   })
-  console.log("用户登录")
+  console.log("正在登录")
+  await userStore.fetchCurrentUser(); // 更新用户信息
   if (res.code===0 && res.data){
     showSuccessToast("用户登录成功");
+
     //拿到地址栏上的重定向参数
     window.location.href = <string>route.query?.redirect ?? '/';
   }else {

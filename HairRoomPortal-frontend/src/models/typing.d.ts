@@ -10,7 +10,7 @@ declare namespace API{
 
         userPassword: string;
 
-        userRole: number;
+        userRole: string;
 
     };
 

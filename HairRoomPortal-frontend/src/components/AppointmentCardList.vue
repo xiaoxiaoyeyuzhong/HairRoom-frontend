@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import picture from "../assets/picture.png";
+import haircut from "../assets/haircut.jpg";
 import myAxios from "../plugins/myAxios";
 import {showFailToast, showSuccessToast} from "vant";
 import {useRouter} from "vue-router";
@@ -15,8 +15,6 @@ interface ScheduleCardListProps{
 //获取当前登录用户
 const router = useRouter();
 const currentUser : API.CurrentUser= ref();
-
-
 
 
 const props= withDefaults(defineProps<ScheduleCardListProps>(),{
@@ -158,7 +156,7 @@ onMounted(async()=>{
   <div id="appointmentCardList">
     <van-card
         v-for="schedule in props.scheduleList"
-        :thumb="picture"
+        :thumb="haircut"
         :desc="`员工名:${schedule.staffId}`"
         :title="`门店名:${schedule.storeId}`"
     >

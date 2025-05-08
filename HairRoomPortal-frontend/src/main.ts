@@ -10,6 +10,7 @@ import 'vant/es/toast/style';
 import routes from './config/routes.ts';
 import {createRouter, createWebHistory} from "vue-router";
 import './global.css'
+import {createPinia} from "pinia";
 const app=createApp(App);
 
 const router = createRouter({
@@ -22,6 +23,7 @@ const router = createRouter({
     routes,
 
 })
+const pinia = createPinia();
 // app.use(Button);
 // app.use(NavBar);
 // app.use(Icon);
@@ -29,4 +31,5 @@ const router = createRouter({
 // app.use(TabbarItem);
 app.use(Vant);
 app.use(router);
+app.use(pinia);
 app.mount('#app');

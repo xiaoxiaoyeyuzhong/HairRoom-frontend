@@ -18,8 +18,12 @@ myAxios.interceptors.request.use(function (config) {
 myAxios.interceptors.response.use(function (response) {
     // 通用拦截未登录用户，重定向到登录页
     if (response.data?.code === 40100) {
+        const currentPath = window.location.pathname;
         const redirectUrl = window.location.href;
-        window.location.href = `/UserPage/UserLoginPage?redirect=${redirectUrl}`;
+        if(!currentPath.includes('/UserPage/UserLoginPage')){
+            window.location.href = `/UserPage/UserLoginPage?redirect=${redirectUrl}`;
+        }
+
     }
     console.log("即将响应,response=",response)
     // 只关心响应数据中的data，这样我们在得到响应后只需要关心后端的封装
