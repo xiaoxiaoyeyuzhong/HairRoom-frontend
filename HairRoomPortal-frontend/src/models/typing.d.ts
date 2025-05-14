@@ -51,7 +51,7 @@ declare namespace API{
       /**
        * 时间段
        */
-      timeSlot: number;
+      timeInterval: number;
 
       /**
        * 已预约数
@@ -62,6 +62,16 @@ declare namespace API{
        * 可预约数
        */
       appointSlots: number;
+
+      /**
+       * 门店名称
+       */
+      storeName: string;
+
+      /**
+       * 员工名称
+       */
+      staffName: string;
    }
 
    type ScheduleQueryRequest = {

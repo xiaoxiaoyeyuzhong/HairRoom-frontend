@@ -157,8 +157,8 @@ onMounted(async()=>{
     <van-card
         v-for="schedule in props.scheduleList"
         :thumb="haircut"
-        :desc="`员工名:${schedule.staffId}`"
-        :title="`门店名:${schedule.storeId}`"
+        :desc="`员工名:${schedule.staffName}`"
+        :title="`门店名:${schedule.storeName}`"
     >
       <!--      <template #tags>-->
       <!--        <van-tag plain type="danger" style="margin-right: 8px; margin-top: 8px">-->
@@ -170,7 +170,7 @@ onMounted(async()=>{
 
       <template #bottom>
         <div>
-          {{ `时间段: ${schedule.timeSlot}` }}
+          {{ `时间段: ${schedule.timeInterval}` }}
         </div>
         <div>
           {{ `已预约人数: ${schedule.haveAppointedSlots}` }}
