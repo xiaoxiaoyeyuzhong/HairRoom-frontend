@@ -63,8 +63,8 @@ const doEdit = (editKey: string,editName: string|number,currentValue: string|und
   <template v-if="user">
     <van-cell title="当前用户" :value="user?.userName" />
     <van-cell title="修改信息" is-link to="/UserPage/UserUpdatePage" />
-    <van-cell title="我创建的队伍" is-link to="/UserPage/TeamPage/UserTeamCreatePage" />
-    <van-cell title="我加入的队伍" is-link to="/UserPage/TeamPage/UserTeamJoinPage" />
+<!--    <van-cell title="我创建的队伍" is-link to="/UserPage/TeamPage/UserTeamCreatePage" />-->
+<!--    <van-cell title="我加入的队伍" is-link to="/UserPage/TeamPage/UserTeamJoinPage" />-->
     <van-cell title="我预约的理发师" is-link to="/UserPage/UserAppointmentPage" />
   </template>
 </template>

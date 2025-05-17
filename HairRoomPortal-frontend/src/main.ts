@@ -6,7 +6,6 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 import 'vant/es/toast/style';
 
-
 import routes from './config/routes.ts';
 import {createRouter, createWebHistory} from "vue-router";
 import './global.css'

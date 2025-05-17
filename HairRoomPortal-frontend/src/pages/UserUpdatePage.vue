@@ -71,8 +71,8 @@ const doEdit = (editKey: string,editName: string|number,currentValue: string|und
     <van-cell title="邮箱" is-link @click="doEdit('email','邮箱',user.email)" :value="user.email" />
     <van-cell title="用户创建时间" is-link :value="new Date(user.createTime).toLocaleDateString()" />
     <van-cell title="用户权限" is-link :value="user.userRole" />
-    <van-cell title="星球编号" is-link :value="user.planetCode" />
-    <van-cell title="标签" is-link to="/SearchPage"/>
+<!--    <van-cell title="星球编号" is-link :value="user.planetCode" />-->
+<!--    <van-cell title="标签" is-link to="/SearchPage"/>-->
   </template>
 </template>
 

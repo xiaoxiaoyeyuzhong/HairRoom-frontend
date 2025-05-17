@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppointmentCardList: typeof import('./src/components/AppointmentCardList.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    RoundedCard: typeof import('./src/components/RoundedCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ScheduleCardList: typeof import('./src/components/ScheduleCardList.vue')['default']
@@ -36,6 +37,8 @@ declare module 'vue' {
     VanSkeleton: typeof import('vant/es')['Skeleton']
     VanSpace: typeof import('vant/es')['Space']
     VanStepper: typeof import('vant/es')['Stepper']
+    VanSwipe: typeof import('vant/es')['Swipe']
+    VanSwipeItem: typeof import('vant/es')['SwipeItem']
     VanSwitch: typeof import('vant/es')['Switch']
     VanTab: typeof import('vant/es')['Tab']
     VanTabbar: typeof import('vant/es')['Tabbar']
