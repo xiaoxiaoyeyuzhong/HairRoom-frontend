@@ -5,6 +5,7 @@ import { message, Modal } from 'antd';
 import React, {useEffect, useState} from 'react';
 import {RcFile} from "antd/es/upload";
 import {ProFormUploadButton} from "@ant-design/pro-form";
+import {uploadFileUsingPost} from "@/services/backend/ossController";
 
 
 interface Props {
@@ -70,9 +71,11 @@ const UpdateModal: React.FC<Props> = (props) => {
 
   // 自定义上传方法
   const handleUpload: (userAvatar: RcFile) => Promise<string> = async (userAvatar: RcFile) => {
-    const body = {}; // 如果有其他需要传递的参数可以放这里
+    const body = {
+      dir: "user/",
+    }; // 如果有其他需要传递的参数可以放这里
     try {
-      const response = await avatarUploadUsingPost(body, userAvatar);
+      const response = await uploadFileUsingPost(body, userAvatar);
 
       if (response && response.data) {
         setUserAvatar(response.data);  // 更新头像URL

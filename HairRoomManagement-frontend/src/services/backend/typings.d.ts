@@ -1,4 +1,9 @@
 declare namespace API {
+  type AutoScheduleRequest = {
+    appointSlots?: number;
+    storeId?: number;
+  };
+
   type BaseResponseBill = {
     code?: number;
     data?: Bill;
@@ -87,6 +92,7 @@ declare namespace API {
     id?: number;
     isDelete?: number;
     staffId?: number;
+    tradeNo?: string;
     updateTime?: string;
   };
 
@@ -111,6 +117,7 @@ declare namespace API {
     sortField?: string;
     sortOrder?: string;
     staffId?: number;
+    tradeNo?: string;
   };
 
   type BillUpdateRequest = {
@@ -132,6 +139,7 @@ declare namespace API {
     customerId?: number;
     id?: number;
     staffId?: number;
+    tradeNo?: string;
     updateTime?: string;
   };
 
