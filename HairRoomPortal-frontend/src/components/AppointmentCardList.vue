@@ -26,17 +26,20 @@ const props= withDefaults(defineProps<ScheduleCardListProps>(),{
 const AppointmentAddRequest = ref({
   customerUserId: 0, // 不能在还未像后端请求currentUser的时候就初始化，会报空指针
   staffId: 0,
+  storeId: 0,
   appointmentTime: props.appointmentTime,
-  timeSlot: 0,
+  timeInterval: 0,
     }
 );
 // 预约理发师
-const doAddAppointment = async (staffId: number,timeSlot: number) =>{
+const doAddAppointment = async (staffId: number,timeInterval: number,storeId: number) =>{
 
   console.log("AppointCard value?  currentUser.value.id=" + currentUser.value.id)
   AppointmentAddRequest.value.staffId=staffId;
-  AppointmentAddRequest.value.timeSlot=timeSlot;
+  AppointmentAddRequest.value.timeInterval=timeInterval;
   AppointmentAddRequest.value.customerUserId=currentUser.value.id;
+  AppointmentAddRequest.value.storeId = storeId;
+
   // 传参数的时候记得，ref（响应式变量）需要取value
   const res = await myAxios.post('/appointment/add',AppointmentAddRequest.value);
   if(res.code === 0){
@@ -188,7 +191,7 @@ onMounted(async()=>{
         <!-- 预约理发师 todo 跳转到选择时间段和号码的页面，点击确定后添加预约，如果要现在支付，再跳转到支付页面 -->
         <van-button  size="small"
                      plain
-                     @click="doAddAppointment(schedule.staffId,schedule.timeSlot)"
+                     @click="doAddAppointment(schedule.staffId,schedule.timeInterval,schedule.storeId)"
                      type="primary"
         >预约理发师</van-button>
 
@@ -199,11 +202,11 @@ onMounted(async()=>{
         >去支付</van-button>
 
         <!-- 取消预约 -->
-        <van-button  size="small"
-                     plain
-                     @click="doQuitTeam(schedule.id)"
-                     type="danger"
-        >取消预约</van-button>
+<!--        <van-button  size="small"-->
+<!--                     plain-->
+<!--                     @click="doQuitTeam(schedule.id)"-->
+<!--                     type="danger"-->
+<!--        >取消预约</van-button>-->
         <!-- 解散队伍：仅创建人可见-->
         <!--        <van-button v-if="schedule.userId === currentUser?.data.id" size="small"  plain type="danger"-->
         <!--                    @click="doDeleteTeam(schedule.id)">解散队伍</van-button>-->
@@ -218,7 +221,7 @@ onMounted(async()=>{
 </template>
 
 <style scoped>
-#teamCardList :deep(.van-image__img) {
+#appointmentCardList :deep(.van-image__img) {
   height: 90px;
   object-fit: unset;
 }

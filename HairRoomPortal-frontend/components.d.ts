@@ -14,6 +14,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     ScheduleCardList: typeof import('./src/components/ScheduleCardList.vue')['default']
     TeamCardList: typeof import('./src/components/teamCardList.vue')['default']
+    UserAppointmentCardList: typeof import('./src/components/UserAppointmentCardList.vue')['default']
     UserCardList: typeof import('./src/components/UserCardList.vue')['default']
     VanButton: typeof import('vant/es')['Button']
     VanCard: typeof import('vant/es')['Card']

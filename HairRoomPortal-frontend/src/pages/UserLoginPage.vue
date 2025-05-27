@@ -16,7 +16,7 @@ const onSubmit = async () => {
     userPassword: userPassword.value,
   })
   console.log("正在登录")
-  await userStore.fetchCurrentUser(); // 更新用户信息
+  await userStore.setCurrentUserState(res.data) // 更新用户信息
   if (res.code===0 && res.data){
     showSuccessToast("用户登录成功");
 

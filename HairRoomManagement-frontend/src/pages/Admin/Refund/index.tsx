@@ -9,7 +9,7 @@ import { Button, message, Space, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
 
 /**
- * 用户管理页面
+ * 退款管理页面
  *
  * @constructor
  */
@@ -27,7 +27,7 @@ const UserAdminPage: React.FC = () => {
    *
    * @param row
    */
-  const handleDelete = async (row: API.UserVO) => {
+  const handleDelete = async (row: API.RefundVO) => {
     const hide = message.loading('正在删除');
     if (!row) return true;
     try {

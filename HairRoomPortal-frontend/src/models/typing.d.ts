@@ -78,4 +78,46 @@ declare namespace API{
       staffId: number;
       weekDay: number;
    }
+
+   type AppointmentVO = {
+      /**
+       * id
+       */
+      id: number;
+
+      /**
+       * 客户id
+       */
+      customerId: number;
+
+      /**
+       * 员工id
+       */
+      staffId: number;
+
+      /**
+       * 门店id
+       */
+      storeId: number;
+
+      /**
+       * 预约日期
+       */
+      appointmentTime: Date;
+
+      /**
+       * 预约时间段
+       */
+      timeInterval: number;
+
+      /**
+       * 门店名称
+       */
+      storeName: string;
+
+      /**
+       * 员工名称
+       */
+      staffName: string;
+   }
 }

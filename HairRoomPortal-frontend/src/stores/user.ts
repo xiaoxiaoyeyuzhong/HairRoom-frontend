@@ -7,7 +7,15 @@ export const useUserStore = defineStore('user', {
     }),
     actions: {
         async fetchCurrentUser() {
-            this.currentUser = await getCurrentUser();
+            if(this.currentUser == null){
+                this.currentUser = await getCurrentUser();
+            }
+            else{
+                return this.currentUser;
+            }
+        },
+        async setCurrentUserState(currentUser: API.CurrentUser){
+            this.currentUser = currentUser;
         },
     },
 });

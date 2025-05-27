@@ -2,7 +2,7 @@
 /* eslint-disable */
 // API 更新时间：
 // API 唯一标识：
-import * as basicErrorController from './basicErrorController';
+import * as aliPayController from './aliPayController';
 import * as billController from './billController';
 import * as ossController from './ossController';
 import * as postController from './postController';
@@ -11,7 +11,7 @@ import * as staffController from './staffController';
 import * as storeController from './storeController';
 import * as userController from './userController';
 export default {
-  basicErrorController,
+  aliPayController,
   billController,
   ossController,
   postController,
