@@ -53,6 +53,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponsePageRefundVO = {
+    code?: number;
+    data?: PageRefundVO;
+    message?: string;
+  };
+
   type BaseResponsePageStaffVO = {
     code?: number;
     data?: PageStaffVO;
@@ -215,6 +221,20 @@ declare namespace API {
     userId?: number;
   };
 
+  type listRefundByPageUsingPOSTParams = {
+    auditSituation?: number;
+    current?: number;
+    id?: number;
+    outTradeNo?: string;
+    pageSize?: number;
+    refundAmount?: number;
+    refundReason?: string;
+    refundSituation?: number;
+    sortField?: string;
+    sortOrder?: string;
+    tradeNo?: string;
+  };
+
   type OrderItem = {
     asc?: boolean;
     column?: string;
@@ -241,6 +261,19 @@ declare namespace API {
     orders?: OrderItem[];
     pages?: number;
     records?: Post[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
+  type PageRefundVO = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: RefundVO[];
     searchCount?: boolean;
     size?: number;
     total?: number;
@@ -318,6 +351,25 @@ declare namespace API {
     place?: string;
     reviewMessage?: string;
     reviewStatus?: number;
+  };
+
+  type RefundUpdateRequest = {
+    auditSituation?: number;
+    id?: number;
+    outTradeNo?: string;
+    tradeNo?: string;
+  };
+
+  type RefundVO = {
+    auditSituation?: number;
+    createTime?: string;
+    id?: number;
+    outTradeNo?: string;
+    refundAmount?: number;
+    refundReason?: string;
+    refundSituation?: number;
+    tradeNo?: string;
+    updateTime?: string;
   };
 
   type Staff = {

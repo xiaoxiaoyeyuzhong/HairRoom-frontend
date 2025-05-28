@@ -110,7 +110,7 @@ const CreateModal: React.FC<Props> = (props) => {
   return (
     <Modal
       destroyOnClose
-      title={'新建用户'}
+      title={'新建'}
       open={visible}
       footer={null}
       onCancel={() => {

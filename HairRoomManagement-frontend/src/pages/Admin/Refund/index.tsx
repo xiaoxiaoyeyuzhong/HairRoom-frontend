@@ -1,46 +1,72 @@
-import CreateModal from '@/pages/Admin/User/components/CreateModal';
-import UpdateModal from '@/pages/Admin/User/components/UpdateModal';
-import { deleteUserUsingPost, listUserByPageUsingPost } from '@/services/backend/userController';
+import CreateModal from '@/pages/Admin/Refund/components/CreateModal';
+import CheckModal from '@/pages/Admin/Refund/components/CheckModal';
+import { deleteUserUsingPost } from '@/services/backend/userController';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import '@umijs/max';
 import { Button, message, Space, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
+import {checkRefundUsingPost, listRefundByPageUsingPost} from "@/services/backend/refundController";
 
 /**
  * 退款管理页面
  *
  * @constructor
  */
-const UserAdminPage: React.FC = () => {
+const RefundAdminPage: React.FC = () => {
   // 是否显示新建窗口
   const [createModalVisible, setCreateModalVisible] = useState<boolean>(false);
   // 是否显示更新窗口
-  const [updateModalVisible, setUpdateModalVisible] = useState<boolean>(false);
+  const [checkModalVisible, setCheckModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   // 当前用户点击的数据
-  const [currentRow, setCurrentRow] = useState<API.UserVO>();
+  const [currentRow, setCurrentRow] = useState<API.RefundVO>();
 
   /**
-   * 删除节点
+   * 审核状态通过节点
    *
    * @param row
    */
-  const handleDelete = async (row: API.RefundVO) => {
-    const hide = message.loading('正在删除');
+  const handleCheckPass = async (row: API.RefundVO) => {
+    const hide = message.loading('正在审核');
     if (!row) return true;
     try {
-      await deleteUserUsingPost({
+      await checkRefundUsingPost({
         id: row.id as any,
+        auditSituation: 1,
       });
       hide();
-      message.success('删除成功');
+      message.success('审核成功');
       actionRef?.current?.reload();
       return true;
     } catch (error: any) {
       hide();
-      message.error('删除失败，' + error.message);
+      message.error('审核失败，' + error.message);
+      return false;
+    }
+  };
+
+  /**
+   * 审核状态驳回节点
+   *
+   * @param row
+   */
+  const handleCheckReject = async (row: API.RefundVO) => {
+    const hide = message.loading('正在审核');
+    if (!row) return true;
+    try {
+      await checkRefundUsingPost({
+        id: row.id as any,
+        auditSituation: 2,
+      });
+      hide();
+      message.success('审核成功');
+      actionRef?.current?.reload();
+      return true;
+    } catch (error: any) {
+      hide();
+      message.error('审核失败，' + error.message);
       return false;
     }
   };
@@ -48,7 +74,7 @@ const UserAdminPage: React.FC = () => {
   /**
    * 表格列配置
    */
-  const columns: ProColumns<API.UserVO>[] = [
+  const columns: ProColumns<API.RefundVO>[] = [
     {
       title: 'id',
       dataIndex: 'id',
@@ -56,44 +82,61 @@ const UserAdminPage: React.FC = () => {
       hideInForm: true,
     },
     {
-      title: '账号',
-      dataIndex: 'userAccount',
+      // disable: true,
+      title: '支付宝交易号',
+      dataIndex: 'tradeNo',
       valueType: 'text',
     },
     {
-      title: '用户名',
-      dataIndex: 'userName',
+      title: '商户订单号',
+      dataIndex: 'outTradeNo',
       valueType: 'text',
     },
     {
-      title: '头像',
-      dataIndex: 'userAvatar',
-      valueType: 'image',
-      fieldProps: {
-        width: 64,
-      },
-      hideInSearch: true,
+      title: '退款金额',
+      dataIndex: 'refundAmount',
+      valueType: 'text',
     },
-    // {
-    //   title: '简介',
-    //   dataIndex: 'userProfile',
-    //   valueType: 'textarea',
-    // },
     {
-      title: '权限',
-      dataIndex: 'userRole',
+      title: '退款原因',
+      dataIndex: 'refundReason',
+      valueType: 'textarea',
+    },
+    {
+      title: '审核情况',
+      dataIndex: 'auditSituation',
+      hideInForm: true,
       valueEnum: {
-        Customer:{
-          text: '客户',
+        0:{
+          text: '未审核',
+          color: "yellow",
+        },
+        1: {
+          text: '审核通过',
           color: "green",
         },
-        Staff: {
-          text: '员工',
-          color: "black",
+        2: {
+          text: '审核不通过',
+          color: "red",
         },
-        Manager: {
-          text: '管理员',
-          color: "blue",
+      },
+    },
+    {
+      title: '退款情况',
+      dataIndex: 'refundSituation',
+      hideInForm: true,
+      valueEnum: {
+        0:{
+          text: '未退款',
+          color: "yellow",
+        },
+        1: {
+          text: '已退款',
+          color: "green",
+        },
+        2: {
+          text: '退款失败',
+          color: "red",
         },
       },
     },
@@ -122,21 +165,31 @@ const UserAdminPage: React.FC = () => {
           <Typography.Link
             onClick={() => {
               setCurrentRow(record);
-              setUpdateModalVisible(true);
+              setCheckModalVisible(true);
             }}
           >
-            修改
+            详情
           </Typography.Link>
-          <Typography.Link type="danger" onClick={() => handleDelete(record)}>
-            删除
+          {!(record.refundSituation === 1) &&
+            (<Typography.Link type="success" onClick={() => handleCheckPass(record)}>
+            通过
           </Typography.Link>
+            )}
+          {!(record.refundSituation === 1) && (
+            <Typography.Link
+              type="danger"
+              onClick={() => handleCheckReject(record)}
+            >
+              驳回
+            </Typography.Link>
+          )}
         </Space>
       ),
     },
   ];
   return (
     <PageContainer>
-      <ProTable<API.UserVO>
+      <ProTable<API.RefundVO>
         headerTitle={'查询表格'}
         actionRef={actionRef}
         rowKey="key"
@@ -159,7 +212,7 @@ const UserAdminPage: React.FC = () => {
           const sortField = Object.keys(sort)?.[0];
           const sortOrder = sort?.[sortField] ?? undefined;
 
-          const { data, code } = await listUserByPageUsingPost({
+          const { data, code } = await listRefundByPageUsingPost({
             ...params,
             sortField,
             sortOrder,
@@ -185,20 +238,20 @@ const UserAdminPage: React.FC = () => {
           setCreateModalVisible(false);
         }}
       />
-      <UpdateModal
-        visible={updateModalVisible}
+      <CheckModal
+        visible={checkModalVisible}
         columns={columns}
         oldData={currentRow}
         onSubmit={() => {
-          setUpdateModalVisible(false);
+          setCheckModalVisible(false);
           setCurrentRow(undefined);
           actionRef.current?.reload();
         }}
         onCancel={() => {
-          setUpdateModalVisible(false);
+          setCheckModalVisible(false);
         }}
       />
     </PageContainer>
   );
 };
-export default UserAdminPage;
+export default RefundAdminPage;

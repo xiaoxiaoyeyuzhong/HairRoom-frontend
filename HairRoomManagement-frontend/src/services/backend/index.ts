@@ -6,6 +6,7 @@ import * as aliPayController from './aliPayController';
 import * as billController from './billController';
 import * as ossController from './ossController';
 import * as postController from './postController';
+import * as refundController from './refundController';
 import * as scheduleController from './scheduleController';
 import * as staffController from './staffController';
 import * as storeController from './storeController';
@@ -15,6 +16,7 @@ export default {
   billController,
   ossController,
   postController,
+  refundController,
   scheduleController,
   staffController,
   storeController,
