@@ -38,12 +38,13 @@ const { currentUser } = storeToRefs(userStore); // 使用 storeToRefs 保持响�
 onMounted(async()=>{
   //获取用户信息
   await userStore.fetchCurrentUser(); // 获取用户信息
-  console.log("BasicLayout.vue:" + currentUser.value);
+  // console.log("BasicLayout.vue:" + currentUser.data);
 })
 
 </script>
 
 <template>
+
   <van-nav-bar
       :title="title"
       left-text="返回"

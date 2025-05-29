@@ -195,11 +195,11 @@ onMounted(async()=>{
                      type="primary"
         >预约理发师</van-button>
 
-        <van-button  size="small"
-                     plain
-                     @click="doPay(schedule.staffId)"
-                     type="success"
-        >去支付</van-button>
+<!--        <van-button  size="small"-->
+<!--                     plain-->
+<!--                     @click="doPay(schedule.staffId)"-->
+<!--                     type="success"-->
+<!--        >去支付</van-button>-->
 
         <!-- 取消预约 -->
 <!--        <van-button  size="small"-->

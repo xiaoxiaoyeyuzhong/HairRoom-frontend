@@ -5,6 +5,8 @@ import {useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
 import {useUserStore} from "../stores/user.ts";
 import {storeToRefs} from "pinia";
+import myAxios from "../plugins/myAxios.ts";
+import {showFailToast, showSuccessToast} from "vant";
 
 
 interface UserAppointmentCardListProps{
@@ -25,16 +27,38 @@ const props= withDefaults(defineProps<UserAppointmentCardListProps>(),{
 
 
 // 订单支付
-const doPay = async (staffId : number) =>{
+const doPay = async (staffId : number,billId: number) =>{
 
-  const outTradeNo = + currentUser.value.id + "_" + staffId + "_" + Date.now()
-
+  const outTradeNo = + currentUser.value.data.id + "_" + staffId + "_" + billId
+      + "_" + Date.now()
   // axios配置了api前缀，但是这里没用到，需要注意加上api前缀
   // 支付宝沙箱不太稳定，可能出现请求三次才成功的情况，不是代码的问题
   // 关于window.open的第二个参数，_self代表直接在本窗口跳转到支付宝支付窗口，而_blank代表使用新窗口打开
   window.open("http://127.0.0.1:8081/api/alipay/pay?billName="+"德田发型屋，"
       + "洗剪吹" + "&outTradeNo="+ outTradeNo  +"&billAmount="
       + "20" ,'_blank')
+}
+
+const RefundAddRequest : API.RefundAddRequest = ref({
+  tradeNo: "0",
+  outTradeNo: "0",
+  refundAmount: 0,
+  refundReason: "未享受服务，申请退款",
+})
+
+// 申请退款
+const doRefund = async (tradeNo : string,outTradeNo: string) =>{
+  RefundAddRequest.value.tradeNo=tradeNo;
+  RefundAddRequest.value.outTradeNo=outTradeNo;
+  RefundAddRequest.value.refundAmount=20;
+
+  const res = await myAxios.post('/refund/add',RefundAddRequest.value);
+  if(res.code === 0){
+    showSuccessToast("申请退款成功");
+
+  }else{
+    showFailToast('申请退款失败' + (res.description ? `，${res.description}` : ''))
+  }
 }
 
 onMounted(async()=>{
@@ -76,23 +100,35 @@ onMounted(async()=>{
 
         <van-button  size="small"
                      plain
-                     @click="doPay(AppointmentVO.staffId)"
-
+                     @click="doPay(AppointmentVO.staffId,AppointmentVO.billId)"
+                     v-if="AppointmentVO.billId === 0"
                      type="success"
         >去支付</van-button>
 
         <van-button  size="small"
                      plain
-                     @click="doPay(AppointmentVO.staffId)"
+                     @click="doRefund(AppointmentVO.tradeNo,AppointmentVO.outTradeNo)"
+                     v-if="(AppointmentVO.billId !== 0) && (AppointmentVO.paySituation !== 0)
+                      && (AppointmentVO.paySituation !== 2) "
                      type="warning"
+
         >申请退款</van-button>
+
 
         <van-button  size="small"
                      plain
-                     @click="doQuitTeam(AppointmentVO.id)"
+                     @click="doCancelAppointment(AppointmentVO.id)"
                      type="danger"
+                     v-if="(AppointmentVO.billId !== 0) && (AppointmentVO.paySituation !== 0)
+                      && (AppointmentVO.paySituation !== 2) "
         >取消预约</van-button>
 
+        <van-button  size="small"
+                     plain
+                     type="danger"
+                     v-if="(AppointmentVO.billId !== 0) && (AppointmentVO.paySituation === 2)"
+                     disabled
+        >用户已退款</van-button>
       </template>
     </van-card>
   </div>

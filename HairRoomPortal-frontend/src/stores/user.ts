@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 import {getCurrentUser} from "../services/user.ts";
 
 export const useUserStore = defineStore('user', {
@@ -7,14 +7,13 @@ export const useUserStore = defineStore('user', {
     }),
     actions: {
         async fetchCurrentUser() {
-            if(this.currentUser == null){
+            if (this.currentUser == null) {
                 this.currentUser = await getCurrentUser();
             }
-            else{
-                return this.currentUser;
-            }
+            return this.currentUser;
+
         },
-        async setCurrentUserState(currentUser: API.CurrentUser){
+        async setCurrentUserState(currentUser: API.CurrentUser) {
             this.currentUser = currentUser;
         },
     },

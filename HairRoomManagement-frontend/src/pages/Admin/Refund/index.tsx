@@ -8,6 +8,7 @@ import '@umijs/max';
 import { Button, message, Space, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
 import {checkRefundUsingPost, listRefundByPageUsingPost} from "@/services/backend/refundController";
+import {refundUsingPost} from "@/services/backend/aliPayController";
 
 /**
  * 退款管理页面
@@ -39,10 +40,20 @@ const RefundAdminPage: React.FC = () => {
       hide();
       message.success('审核成功');
       actionRef?.current?.reload();
+
+      // 调用退款接口，完成退款
+      await refundUsingPost({
+        tradeNo: row.tradeNo,
+        outTradeNo: row.outTradeNo,
+        refundReason: row.refundReason,
+        refundAmount: row.refundAmount,
+      })
+      hide();
+      message.success('退款成功');
       return true;
     } catch (error: any) {
       hide();
-      message.error('审核失败，' + error.message);
+      message.error('操作失败，' + error.message);
       return false;
     }
   };

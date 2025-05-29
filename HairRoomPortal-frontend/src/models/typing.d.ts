@@ -79,6 +79,28 @@ declare namespace API{
       weekDay: number;
    }
 
+   type RefundAddRequest = {
+      /**
+       * 支付宝交易号
+       */
+      tradeNo: string;
+
+      /**
+       * 商户订单号
+       */
+      outTradeNo: string;
+
+      /**
+       * 退款金额
+       */
+      refundAmount: number;
+
+      /**
+       * 退款原因
+       */
+      refundReason: string;
+   }
+
    type AppointmentVO = {
       /**
        * id
@@ -101,6 +123,11 @@ declare namespace API{
       storeId: number;
 
       /**
+       * 账单id
+       */
+      billId: number;
+
+      /**
        * 预约日期
        */
       appointmentTime: Date;
@@ -119,5 +146,20 @@ declare namespace API{
        * 员工名称
        */
       staffName: string;
+
+      /**
+       * 支付宝交易号
+       */
+      tradeNo: string;
+
+      /**
+       * 商户订单号
+       */
+      outTradeNo: string;
+
+      /**
+       * 支付状态
+       */
+      paySituation: number;
    }
 }
