@@ -29,8 +29,6 @@ const routes = [
     {path: '/UserPage/SearchResultPage',title:'搜索结果页',component: SearchResultPage},
     {path: '/UserPage/UserLoginPage',title:'用户登录',component: UserLoginPage},
     {path: '/UserPage/UserUpdatePage',title:'更新个人信息',component: UserUpdatePage},
-    {path: '/UserPage/TeamPage/UserTeamJoinPage',title:'我加入的队伍',component: UserTeamJoinPage},
-    {path: '/UserPage/TeamPage/UserTeamCreatePage',title:'我创建的队伍',component: UserTeamCreatePage},
     { path: '/UserPage/UserAppointmentPage',title:'已预约列表', component: UserAppointmentPage },
 
 

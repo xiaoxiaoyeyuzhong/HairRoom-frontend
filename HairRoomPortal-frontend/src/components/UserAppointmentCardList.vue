@@ -46,6 +46,22 @@ const RefundAddRequest : API.RefundAddRequest = ref({
   refundReason: "未享受服务，申请退款",
 })
 
+const DeleteRequest = ref({
+  id: 0,
+})
+
+// 取消预约
+const doCancelAppointment = async (id: number)=>{
+  DeleteRequest.value.id = id;
+  const res = await myAxios.post('appointment/cancel',DeleteRequest.value);
+  if(res.code === 0){
+    showSuccessToast("已经取消预约");
+    window.location.reload();
+  }else{
+    showFailToast('取消预约失败' + (res.description ? `，${res.description}` : ''))
+  }
+}
+
 // 申请退款
 const doRefund = async (tradeNo : string,outTradeNo: string) =>{
   RefundAddRequest.value.tradeNo=tradeNo;
@@ -55,6 +71,7 @@ const doRefund = async (tradeNo : string,outTradeNo: string) =>{
   const res = await myAxios.post('/refund/add',RefundAddRequest.value);
   if(res.code === 0){
     showSuccessToast("申请退款成功");
+    window.location.reload();
 
   }else{
     showFailToast('申请退款失败' + (res.description ? `，${res.description}` : ''))
@@ -101,15 +118,14 @@ onMounted(async()=>{
         <van-button  size="small"
                      plain
                      @click="doPay(AppointmentVO.staffId,AppointmentVO.billId)"
-                     v-if="AppointmentVO.billId === 0"
+                     v-if="AppointmentVO.paySituation === 0"
                      type="success"
         >去支付</van-button>
 
         <van-button  size="small"
                      plain
                      @click="doRefund(AppointmentVO.tradeNo,AppointmentVO.outTradeNo)"
-                     v-if="(AppointmentVO.billId !== 0) && (AppointmentVO.paySituation !== 0)
-                      && (AppointmentVO.paySituation !== 2) "
+                     v-if="(AppointmentVO.paySituation === 1)"
                      type="warning"
 
         >申请退款</van-button>
@@ -119,17 +135,24 @@ onMounted(async()=>{
                      plain
                      @click="doCancelAppointment(AppointmentVO.id)"
                      type="danger"
-                     v-if="(AppointmentVO.billId !== 0) && (AppointmentVO.paySituation !== 0)
-                      && (AppointmentVO.paySituation !== 2) "
+                     v-if="(AppointmentVO.paySituation === 0)"
         >取消预约</van-button>
 
         <van-button  size="small"
                      plain
                      type="danger"
-                     v-if="(AppointmentVO.billId !== 0) && (AppointmentVO.paySituation === 2)"
+                     v-if="(AppointmentVO.paySituation === 2)"
                      disabled
         >用户已退款</van-button>
+
+        <van-button  size="small"
+                     plain
+                     type="danger"
+                     v-if="(AppointmentVO.paySituation === 3)"
+                     disabled
+        >退款处理中</van-button>
       </template>
+
     </van-card>
   </div>
 

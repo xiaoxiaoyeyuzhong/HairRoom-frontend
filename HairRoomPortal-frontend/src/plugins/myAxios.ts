@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const baseURLByProduction = 'https://1bdf3988.r3.cpolar.cn/api';
+const baseURLByDevelopment = 'http://localhost:8081/api'
 const myAxios = axios.create({
-    baseURL: 'http://localhost:8081/api'
+    baseURL: baseURLByDevelopment
 })
 myAxios.defaults.withCredentials = true;
 // 添加请求拦截器
