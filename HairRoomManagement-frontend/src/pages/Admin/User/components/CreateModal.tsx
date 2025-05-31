@@ -5,6 +5,7 @@ import {message, Modal} from 'antd';
 import React, {useState} from 'react';
 import {ProFormUploadButton} from "@ant-design/pro-form";
 import {RcFile} from "antd/es/upload";
+import {uploadFileUsingPost} from "@/services/backend/ossController";
 
 interface Props {
   visible: boolean;
@@ -52,10 +53,12 @@ const CreateModal: React.FC<Props> = (props) => {
   const handleUpload :(userAvatar: RcFile) => Promise<string> = async (userAvatar: RcFile) => {
     // const formData = new FormData();
     // formData.append('userAvatar', userAvatar);
-    const body = {};
+    const body = {
+      dir: "user/",
+    };
     try {
       // 调用上传接口
-      const response = await avatarUploadUsingPost(body,userAvatar);
+      const response = await uploadFileUsingPost(body,userAvatar);
 
       // 提取文件 URL (假设返回的数据结构是 response.data)
       if (response && response.data) {

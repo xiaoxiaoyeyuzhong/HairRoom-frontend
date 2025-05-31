@@ -162,4 +162,63 @@ declare namespace API{
        */
       paySituation: number;
    }
+
+   type StaffEvaluationVO = {
+
+      /**
+       * id
+       */
+      id: number;
+
+      /**
+       * 客户id
+       */
+      customerId: number;
+
+      /**
+       * 员工id
+       */
+      staffId: number;
+
+      /**
+       * 关联的预约id
+       */
+      appointmentId: number;
+
+      /**
+       * 评价内容
+       */
+      evaluation: string;
+
+      /**
+       * 评价分数
+       */
+      evaluationScore: number;
+
+      /**
+       * 评价状态
+       */
+      evaluationSituation: number;
+
+      /**
+       * 门店名称
+       */
+      storeName: string;
+
+      /**
+       * 员工名称
+       */
+      staffName: string;
+
+      /**
+       * 预约时间
+       */
+      appointmentTime: string;
+
+      /**
+       * 预约时间段
+       */
+      timeInterval: number;
+   }
+
 }

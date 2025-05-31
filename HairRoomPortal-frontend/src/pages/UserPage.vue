@@ -66,6 +66,7 @@ const doEdit = (editKey: string,editName: string|number,currentValue: string|und
 <!--    <van-cell title="我创建的队伍" is-link to="/UserPage/TeamPage/UserTeamCreatePage" />-->
 <!--    <van-cell title="我加入的队伍" is-link to="/UserPage/TeamPage/UserTeamJoinPage" />-->
     <van-cell title="我预约的理发师" is-link to="/UserPage/UserAppointmentPage" />
+    <van-cell title="我的评价" is-link to="/UserPage/UserStaffEvaluationPage" />
   </template>
 </template>
 
