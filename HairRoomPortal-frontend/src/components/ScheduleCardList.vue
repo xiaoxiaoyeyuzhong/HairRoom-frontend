@@ -42,7 +42,14 @@ const doAddSchedule = async () =>{
       replace: true,
     });
   }else {
-    showFailToast('加入失败' + (res.description ? `，${res.description}` : ''))
+    let errorMsg = '加入失败';
+    if (res.message) {
+      errorMsg += `：${res.message}`;
+    }
+    if (res.description) {
+      errorMsg += `，详情：${res.description}`;
+    }
+    showFailToast(errorMsg);
   }
 }
 

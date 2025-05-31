@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<UserCardListProps>(),{
   <van-skeleton title avatar :row="3" :loading="props.loading" v-for="user in props.userList">
     <van-card
         :desc="user.profile"
-        :title="`姓名:${user.username} 星球编号:${user.planetCode}`"
+        :title="`姓名:${user.username}`"
         :thumb="user.avatarUrl"
     >
       <template #tags>

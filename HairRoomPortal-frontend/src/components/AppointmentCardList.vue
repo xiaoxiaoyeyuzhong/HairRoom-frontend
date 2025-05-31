@@ -46,7 +46,14 @@ const doAddAppointment = async (staffId: number,timeInterval: number,storeId: nu
     showSuccessToast("预约理发师成功");
 
   }else{
-    showFailToast('预约失败' + (res.description ? `，${res.description}` : ''))
+    let errorMsg = '预约失败';
+    if (res.message) {
+      errorMsg += `：${res.message}`;
+    }
+    if (res.description) {
+      errorMsg += `，详情：${res.description}`;
+    }
+    showFailToast(errorMsg);
   }
 
 }
