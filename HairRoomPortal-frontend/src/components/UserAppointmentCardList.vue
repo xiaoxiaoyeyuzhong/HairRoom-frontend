@@ -151,6 +151,12 @@ onMounted(async()=>{
                      v-if="(AppointmentVO.paySituation === 3)"
                      disabled
         >退款处理中</van-button>
+        <van-button  size="small"
+                     plain
+                     type="danger"
+                     v-if="(AppointmentVO.paySituation === 4)"
+                     disabled
+        >退款失败</van-button>
       </template>
 
     </van-card>

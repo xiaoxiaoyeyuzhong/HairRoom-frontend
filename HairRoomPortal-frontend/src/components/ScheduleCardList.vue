@@ -22,61 +22,15 @@ const props= withDefaults(defineProps<ScheduleCardListProps>(),{
   scheduleList: [] as API.Schedule[]
 });
 
-//加入队伍
-const joinTeamId = ref(0);
-const password = ref('');
-const showPasswordDialog =ref(false);
-const doAddSchedule = async () =>{
-  if(!joinTeamId){
-    return;
-  }
-  const res = await myAxios.post('/schedule/join',{
-    teamId: joinTeamId.value,
-    password: password.value,
-  });
-  if (res?.code === 0){
-    showSuccessToast("加入队伍成功");
-    doJoinCancel();
-    await router.push({
-      path: '/UserPage/TeamPage/UserTeamJoinPage',
-      replace: true,
-    });
-  }else {
-    let errorMsg = '加入失败';
-    if (res.message) {
-      errorMsg += `：${res.message}`;
-    }
-    if (res.description) {
-      errorMsg += `，详情：${res.description}`;
-    }
-    showFailToast(errorMsg);
-  }
-}
-
-//准备加入队伍
-// const preJoinTeam = (schedule:API.Team)=>{
-//   joinTeamId.value = schedule.id;
-//   if(schedule.status===0){
-//     doJoinTeam();
-//   }else {
-//     // showPasswordDialog.value = true;
-//   }
-// }
-//清空加入参数
-const doJoinCancel =()=>{
-  joinTeamId.value = 0;
-  password.value = '';
-}
-
 //  在跳转到更新排班页面的时候传递已经存在的排班时间段
 // 不用ref，router传递数据的时候会爆红，而且不能用const，因为不能改
-let timeSlots : number[]= [
+let timeIntervals : number[]= [
 ];
 
 const pushTimeSlots = () =>{
   // 处理排班数组中的每一项，将其中的排班时间段组成一个新数组返回
-  timeSlots =props.scheduleList.map(schedule => schedule.timeSlot);
-  console.log("appointmentPage_处理排班时间段" + timeSlots[0]);
+  timeIntervals =props.scheduleList.map(schedule => schedule.timeInterval);
+  console.log("appointmentPage_处理排班时间段" + timeIntervals[0]);
 }
 
 /**
@@ -91,7 +45,7 @@ const doUpdateSchedule=(id: number,nowTimeSlot: number)=>{
     query:{
       id,
       nowTimeSlot,
-      timeSlots,
+      timeIntervals,
     }
   })
 }
@@ -102,37 +56,6 @@ const timeSlotsMap = [
   { value: 2, label: '下午' },
   { value: 3, label: '晚上' },
 ];
-
-/**
- * 退出队伍
- * @param id
- */
-const doQuitTeam = async (id: number) => {
-  const res = await myAxios.post('/schedule/quit', {
-    teamId: id
-  });
-  if (res?.code === 0) {
-    showSuccessToast('操作成功');
-
-  } else {
-    showFailToast('操作失败' + (res.description ? `，${res.description}` : ''));
-  }
-}
-/**
- * 解散队伍
- * @param id
- */
-const doDeleteTeam = async (id: number) => {
-  const res = await myAxios.post('/schedule/delete/id', {
-    id,
-  });
-  if (res?.code === 0) {
-    showSuccessToast('操作成功');
-  } else {
-    showFailToast('操作失败' + (res.description ? `，${res.description}` : ''));
-  }
-}
-
 onMounted(async()=>{
   currentUser.value=await getCurrentUser();
 
@@ -145,36 +68,21 @@ onMounted(async()=>{
     <van-card
         v-for="schedule in props.scheduleList"
         :thumb="picture"
-        :desc="`员工名:${schedule.staffId}`"
-        :title="`门店名:${schedule.storeId}`"
+        :desc="`员工名:${schedule.staffName}`"
+        :title="`门店名:${schedule.storeName}`"
     >
-      <!--      <template #tags>-->
-      <!--        <van-tag plain type="danger" style="margin-right: 8px; margin-top: 8px">-->
-      <!--          {{-->
-      <!--            teamStatusEnum[schedule.status]-->
-      <!--          }}-->
-      <!--        </van-tag>-->
-      <!--      </template>-->
 
       <template #bottom>
         <div>
           <div
-              v-for="(timeSlot, index) in timeSlotsMap"
-              :key="timeSlot.value"
-              :name="timeSlot.value"
-              v-show="Number(`${schedule.timeSlot}`) === timeSlot.value"
+              v-for="(timeInterval, index) in timeSlotsMap"
+              :key="timeInterval.value"
+              :name="timeInterval.value"
+              v-show="Number(`${schedule.timeInterval}`) === timeInterval.value"
           >
-            {{ timeSlot.label }}
+            时间段:{{ timeInterval.label }}
           </div>
-          <!--          <div v-if="Number(`${schedule.timeSlot}`)===1" >-->
-          <!--            上午-->
-          <!--          </div>-->
-          <!--          <div v-if="Number(`${schedule.timeSlot}`)===2" >-->
-          <!--            下午-->
-          <!--          </div>-->
-          <!--          <div v-if="Number(`${schedule.timeSlot}`)===3" >-->
-          <!--            晚上-->
-          <!--          </div>-->
+
         </div>
         <div>
           {{ `已预约人数: ${schedule.haveAppointedSlots}` }}
@@ -193,24 +101,19 @@ onMounted(async()=>{
         <!-- 更新排班 -->
         <van-button  size="small"
                      plain
-                     @click="doUpdateSchedule(schedule.id,schedule.timeSlot)"
+                     @click="doUpdateSchedule(schedule.id,schedule.timeInterval)"
                      type="warning"
         >更新排班</van-button>
         <!-- 删除排班 -->
         <van-button  size="small"
                      plain
-                     @click="doQuitTeam(schedule.id)"
+                     @click=""
                      type="danger"
         >删除排班</van-button>
-        <!-- 解散队伍：仅创建人可见-->
-        <!--        <van-button v-if="schedule.userId === currentUser?.data.id" size="small"  plain type="danger"-->
-        <!--                    @click="doDeleteTeam(schedule.id)">解散队伍</van-button>-->
+
       </template>
     </van-card>
-    <!--    <van-dialog v-model:show="showPasswordDialog" title="请输入密码" show-cancel-button-->
-    <!--                @confirm="doJoinTeam" @cancel="doJoinCancel">-->
-    <!--      <van-field v-model="password"  placeholder="请输入密码" />-->
-    <!--    </van-dialog>-->
+
   </div>
 
 </template>
