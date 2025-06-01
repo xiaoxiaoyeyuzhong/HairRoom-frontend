@@ -4,6 +4,7 @@
 // API 唯一标识：
 import * as aliPayController from './aliPayController';
 import * as billController from './billController';
+import * as businessSituationController from './businessSituationController';
 import * as ossController from './ossController';
 import * as postController from './postController';
 import * as refundController from './refundController';
@@ -14,6 +15,7 @@ import * as userController from './userController';
 export default {
   aliPayController,
   billController,
+  businessSituationController,
   ossController,
   postController,
   refundController,

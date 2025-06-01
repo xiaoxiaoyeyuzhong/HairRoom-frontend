@@ -1,37 +1,37 @@
-import CreateModal from '@/pages/Admin/Bill/components/CreateModal';
-import UpdateModal from '@/pages/Admin/Bill/components/UpdateModal';
-import { PlusOutlined } from '@ant-design/icons';
+import CreateModal from "@/pages/Admin/Staff/components/CreateModal";
+import UpdateModal from "@/pages/Admin/Staff/components/UpdateModal";
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import '@umijs/max';
 import { Button, message, Space, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
-import {deleteBillUsingPost, listBillByPageUsingPost} from "@/services/backend/billController";
+import {deleteStaffUsingPost, listStaffByPageUsingPost} from "@/services/backend/staffController";
+import {PlusOutlined} from "@ant-design/icons";
 
 /**
- * 账单管理页面
+ * 员工管理页面
  *
  * @constructor
  */
-const BillAdminPage: React.FC = () => {
+const StaffAdminPage: React.FC = () => {
   // 是否显示新建窗口
   const [createModalVisible, setCreateModalVisible] = useState<boolean>(false);
   // 是否显示更新窗口
   const [updateModalVisible, setUpdateModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   // 当前用户点击的数据
-  const [currentRow, setCurrentRow] = useState<API.BillVO>();
+  const [currentRow, setCurrentRow] = useState<API.StaffVO>();
 
   /**
    * 删除节点
    *
    * @param row
    */
-  const handleDelete = async (row: API.BillVO) => {
+  const handleDelete = async (row: API.StaffVO) => {
     const hide = message.loading('正在删除');
     if (!row) return true;
     try {
-      await deleteBillUsingPost({
+      await deleteStaffUsingPost({
         id: row.id as any,
       });
       hide();
@@ -48,7 +48,7 @@ const BillAdminPage: React.FC = () => {
   /**
    * 表格列配置
    */
-  const columns: ProColumns<API.BillVO>[] = [
+  const columns: ProColumns<API.StaffVO>[] = [
     {
       title: 'id',
       dataIndex: 'id',
@@ -56,33 +56,38 @@ const BillAdminPage: React.FC = () => {
       hideInForm: true,
     },
     {
-      title: '账单名称',
-      dataIndex: 'billName',
+      title: '员工名称',
+      dataIndex: 'staffName',
       valueType: 'text',
     },
     {
-      title: '账单金额',
-      dataIndex: 'billAmount',
+      title: '员工性别',
+      dataIndex: 'staffSex',
       valueType: 'text',
     },
     {
-      title: '账单类型',
-      dataIndex: 'billType',
+      title: '员工年龄',
+      dataIndex: 'staffAge',
       valueType: 'text',
     },
     {
-      title: '账单描述',
-      dataIndex: 'billDesc',
+      title: '员工电话',
+      dataIndex: 'staffPhone',
       valueType: 'text',
     },
     {
-      title: '客户id',
-      dataIndex: 'customerId',
+      title: '员工邮件',
+      dataIndex: 'staffEmail',
       valueType: 'text',
     },
     {
-      title: '员工id',
-      dataIndex: 'staffId',
+      title: '创建用户id',
+      dataIndex: 'userId',
+      valueType: 'text',
+    },
+    {
+      title: '所属门店id',
+      dataIndex: 'storeId',
       valueType: 'text',
     },
     {
@@ -124,7 +129,7 @@ const BillAdminPage: React.FC = () => {
   ];
   return (
     <PageContainer>
-      <ProTable<API.BillVO>
+      <ProTable<API.StaffVO>
         headerTitle={'查询表格'}
         actionRef={actionRef}
         rowKey="key"
@@ -147,7 +152,7 @@ const BillAdminPage: React.FC = () => {
           const sortField = Object.keys(sort)?.[0];
           const sortOrder = sort?.[sortField] ?? undefined;
 
-          const { data, code } = await listBillByPageUsingPost({
+          const { data, code } = await listStaffByPageUsingPost({
             ...params,
             sortField,
             sortOrder,
@@ -189,4 +194,4 @@ const BillAdminPage: React.FC = () => {
     </PageContainer>
   );
 };
-export default BillAdminPage;
+export default StaffAdminPage;

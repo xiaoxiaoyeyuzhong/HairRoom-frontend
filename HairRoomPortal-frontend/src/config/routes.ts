@@ -22,7 +22,6 @@ const routes = [
     {path: '/SchedulePage/ScheduleUpdatePage', title: '更新排班', component: ScheduleUpdatePage},
     {path: '/TeamPage/TeamAddPage', title: '创建队伍', component: TeamAddPage},
     {path: '/TeamPage/TeamUpdatePage', title: '更新队伍', component: TeamUpdatePage},
-    {path: '/SearchPage', title: '找伙伴', component: SearchPage},
     {path: '/UserPage', title: '个人信息', component: UserPage},
     {path: '/UserPage/EditUserPage', title: '编辑个人信息', component: EditUserPage},
     {path: '/UserPage/SearchResultPage', title: '搜索结果页', component: SearchResultPage},

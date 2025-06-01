@@ -68,7 +68,6 @@ onMounted(async()=>{
 </script>
 
 <template>
-  {{props.appointmentTime}}
   <div id="appointmentCardList">
     <van-card
         v-for="schedule in props.scheduleList"

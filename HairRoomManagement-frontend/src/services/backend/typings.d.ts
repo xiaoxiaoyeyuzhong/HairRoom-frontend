@@ -23,6 +23,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseListBusinessSituationVO = {
+    code?: number;
+    data?: BusinessSituationVO[];
+    message?: string;
+  };
+
   type BaseResponseListPost = {
     code?: number;
     data?: Post[];
@@ -44,6 +50,12 @@ declare namespace API {
   type BaseResponsePageBillVO = {
     code?: number;
     data?: PageBillVO;
+    message?: string;
+  };
+
+  type BaseResponsePageBusinessSituationVO = {
+    code?: number;
+    data?: PageBusinessSituationVO;
     message?: string;
   };
 
@@ -158,6 +170,25 @@ declare namespace API {
     updateTime?: string;
   };
 
+  type BusinessSituationQueryRequest = {
+    current?: number;
+    id?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+  };
+
+  type BusinessSituationVO = {
+    businessAmount?: number;
+    businessCost?: number;
+    businessDay?: string;
+    businessProfit?: number;
+    createTime?: string;
+    id?: number;
+    storeId?: number;
+    updateTime?: string;
+  };
+
   type DeleteRequest = {
     id?: number;
   };
@@ -248,6 +279,19 @@ declare namespace API {
     orders?: OrderItem[];
     pages?: number;
     records?: BillVO[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
+  type PageBusinessSituationVO = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: BusinessSituationVO[];
     searchCount?: boolean;
     size?: number;
     total?: number;
@@ -425,7 +469,19 @@ declare namespace API {
     storeId?: number;
   };
 
-  type StaffVO = true;
+  type StaffVO = {
+    createTime?: string;
+    id?: number;
+    isStoreManager?: number;
+    staffAge?: number;
+    staffEmail?: string;
+    staffName?: string;
+    staffPhone?: string;
+    staffSex?: string;
+    storeId?: number;
+    updateTime?: string;
+    userId?: number;
+  };
 
   type UserAddRequest = {
     userAccount?: string;
