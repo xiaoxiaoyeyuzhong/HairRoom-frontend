@@ -109,7 +109,6 @@ onMounted(() => {
           :name="day"
       />
     </van-tabs>
-    <van-button class="add-button" type="primary" icon="plus" @click="doAddTeam" />
     <appointment-card-list class="card-component" :schedule-list="scheduleList" :appointment-time="selectedDay"/>
     <van-empty v-if="scheduleList?.length < 1" description="数据为空" />
   </div>

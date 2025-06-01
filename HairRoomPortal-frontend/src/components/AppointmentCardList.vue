@@ -29,16 +29,17 @@ const AppointmentAddRequest = ref({
   storeId: 0,
   appointmentTime: props.appointmentTime,
   timeInterval: 0,
-    }
-);
+    });
 // 预约理发师
 const doAddAppointment = async (staffId: number,timeInterval: number,storeId: number) =>{
 
-  console.log("AppointCard value?  currentUser.value.id=" + currentUser.value.id)
+  console.log("AppointCard value?  props.appointmentTime=" + props.appointmentTime)
   AppointmentAddRequest.value.staffId=staffId;
   AppointmentAddRequest.value.timeInterval=timeInterval;
   AppointmentAddRequest.value.customerUserId=currentUser.value.id;
   AppointmentAddRequest.value.storeId = storeId;
+  // AppointmentAddRequest只会初始化一次，所以每次都要指定appointmentTime的值
+  AppointmentAddRequest.value.appointmentTime = props.appointmentTime;
 
   // 传参数的时候记得，ref（响应式变量）需要取value
   const res = await myAxios.post('/appointment/add',AppointmentAddRequest.value);
@@ -67,6 +68,7 @@ onMounted(async()=>{
 </script>
 
 <template>
+  {{props.appointmentTime}}
   <div id="appointmentCardList">
     <van-card
         v-for="schedule in props.scheduleList"
